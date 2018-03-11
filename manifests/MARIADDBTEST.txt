@@ -1,0 +1,39 @@
+Log into mysql using mysql -u root -p and run the following to create a database and user:
+
+create database some_db;
+create user 'my_app_user'@'%' identified by 'my_password';
+grant all privileges on some_db.* to 'my_app_user'@'%';
+flush privileges;
+Edit and tests connection with that user:
+
+mysql -u my_app_user -p;
+> show databases; # see database "some_db"
+
+
+
+
+PHP TEST :
+
+
+Let's next create a php file at /var/www/html/test.php:
+
+<?php
+$dsn = 'mysql:dbname=some_db;host=localhost';
+$user = 'my_app_user';
+$password = 'my_password';
+
+try {
+    $dbh = new PDO($dsn, $user, $password);
+} catch (\PDOException $e) {
+    echo 'Connection failed: ' . $e->getMessage();
+}
+
+echo "Connected!";
+?>
+
+
+
+
+
+
+
